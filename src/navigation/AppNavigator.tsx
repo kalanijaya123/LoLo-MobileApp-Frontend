@@ -6,6 +6,7 @@ import HomeScreen from '../screens/HomeScreen';
 import FavouritesScreen from '../screens/FavouritesScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import DetailsScreen from '../screens/DetailsScreen';
+import Header from '../components/Header';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,6 +16,7 @@ export default function AppNavigator() {
             screenOptions={{
                 tabBarActiveTintColor: '#e91e63',
                 tabBarInactiveTintColor: 'gray',
+                header: () => <Header />, // ← Shows username in header
             }}
         >
             <Tab.Screen
@@ -22,7 +24,6 @@ export default function AppNavigator() {
                 component={HomeScreen}
                 options={{
                     tabBarIcon: ({ color }) => <Feather name="home" size={24} color={color} />,
-                    headerShown: false,
                 }}
             />
             <Tab.Screen
@@ -30,7 +31,6 @@ export default function AppNavigator() {
                 component={FavouritesScreen}
                 options={{
                     tabBarIcon: ({ color }) => <Feather name="heart" size={24} color={color} />,
-                    headerShown: false,
                 }}
             />
             <Tab.Screen
@@ -38,7 +38,6 @@ export default function AppNavigator() {
                 component={ProfileScreen}
                 options={{
                     tabBarIcon: ({ color }) => <Feather name="user" size={24} color={color} />,
-                    headerShown: false,
                 }}
             />
             <Tab.Screen
