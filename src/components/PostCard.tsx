@@ -38,7 +38,7 @@ export default function PostCard({ post, onPress }: Props) {
                     <Text style={styles.reactions}>Likes {post.reactions}</Text>
                     <TouchableOpacity onPress={handleFavourite}>
                         <Feather
-                            name={isFav ? 'heart' : 'heart-outline'}
+                            name={'heart'}
                             size={22}
                             color={isFav ? '#e91e63' : '#666'}
                         />
