@@ -27,7 +27,7 @@ export default function DetailsScreen() {
                 <Text style={styles.body}>{post.body}</Text>
                 <View style={styles.meta}>
                     <Text style={styles.reactions}>
-                        <Feather name="heart" size={16} color="#e91e63" /> {post.reactions} Likes
+                        <Feather name="heart" size={16} color="#e91e63" /> {post.reactions.likes} Likes
                     </Text>
                     <Text style={styles.tags}>
                         {post.tags.map(t => `#${t}`).join(' ')}

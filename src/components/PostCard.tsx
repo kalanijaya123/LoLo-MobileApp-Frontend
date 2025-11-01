@@ -35,7 +35,9 @@ export default function PostCard({ post, onPress }: Props) {
                 <Text style={styles.title} numberOfLines={2}>{post.title}</Text>
                 <Text style={styles.body} numberOfLines={2}>{post.body}</Text>
                 <View style={styles.footer}>
-                    <Text style={styles.reactions}>Likes {post.reactions}</Text>
+                    <Text style={styles.reactions}>
+                        Likes {post.reactions.likes}
+                    </Text>
                     <TouchableOpacity onPress={handleFavourite}>
                         <Feather
                             name={'heart'}
