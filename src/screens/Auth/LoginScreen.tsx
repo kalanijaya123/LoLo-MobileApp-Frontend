@@ -131,104 +131,112 @@ export default function LoginScreen({ navigation }: any) {
 
     if (!fontsLoaded) return null;
 
+    const content = (
+        <LinearGradient
+            colors={isDark ? ['#1e1e1e', '#121212'] : ['#dfdedeff', '#d9d9d9ff', '#860a0aff']}
+            style={styles.container}
+        >
+            {/* Heart Rain */}
+            {showHearts && <HeartRain />}
+
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={{ flex: 1 }}
+            >
+                {/* Logo */}
+                <Animated.View style={[styles.logoWrapper, { transform: [{ scale: logoScale }] }]}>
+                    <Image source={require('../../../assets/logo.png')} style={styles.logo} resizeMode="contain" />
+                </Animated.View>
+
+                {/* Card */}
+                <Animated.View
+                    style={[
+                        styles.card,
+                        { opacity: cardOpacity, transform: [{ translateY: cardY }], backgroundColor: isDark ? '#1e1e1e' : '#fff' },
+                    ]}
+                >
+                    <Text style={styles.title}>Login</Text>
+
+                    {/* Username */}
+                    <Controller
+                        control={control}
+                        name="username"
+                        render={({ field }) => (
+                            <View
+                                style={[
+                                    styles.inputWrapper,
+                                    usernameFocused && styles.inputWrapperFocused,
+                                    { backgroundColor: isDark ? '#2a2a2a' : '#fafafa', borderColor: isDark ? '#333' : '#eee' },
+                                ]}
+                            >
+                                <Feather name="user" size={20} color="#8a7e7eff" style={styles.icon} />
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Username"
+                                    autoCapitalize="none"
+                                    value={field.value}
+                                    onChangeText={field.onChange}
+                                    onFocus={() => setUsernameFocused(true)}
+                                    onBlur={() => setUsernameFocused(false)}
+                                />
+                            </View>
+                        )}
+                    />
+                    {errors.username && <Text style={styles.error}>{errors.username.message}</Text>}
+
+                    {/* Password */}
+                    <Controller
+                        control={control}
+                        name="password"
+                        render={({ field }) => (
+                            <View
+                                style={[
+                                    styles.inputWrapper,
+                                    passwordFocused && styles.inputWrapperFocused,
+                                    { backgroundColor: isDark ? '#2a2a2a' : '#fafafa', borderColor: isDark ? '#333' : '#eee' },
+                                ]}
+                            >
+                                <Feather name="lock" size={20} color="#999" style={styles.icon} />
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Password"
+                                    secureTextEntry={!showPassword}
+                                    value={field.value}
+                                    onChangeText={field.onChange}
+                                    onFocus={() => setPasswordFocused(true)}
+                                    onBlur={() => setPasswordFocused(false)}
+                                />
+                                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                                    <Feather name={showPassword ? 'eye' : 'eye-off'} size={20} color="#999" />
+                                </TouchableOpacity>
+                            </View>
+                        )}
+                    />
+                    {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
+
+                    {/* Login Button */}
+                    <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
+                        <LinearGradient colors={['#e91e63', '#ff6b6b']} style={styles.buttonGradient}>
+                            <Text style={styles.buttonText}>Login</Text>
+                        </LinearGradient>
+                    </TouchableOpacity>
+
+                    {/* Register Link */}
+                    <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+                        <Text style={styles.link}>Don't have an account? Register</Text>
+                    </TouchableOpacity>
+                </Animated.View>
+            </KeyboardAvoidingView>
+        </LinearGradient>
+    );
+
+    // On web don't wrap in TouchableWithoutFeedback because it can intercept pointer events
+    // and prevent focusing TextInput; on native we keep the dismiss-on-press behaviour.
+    if (Platform.OS === 'web') return content;
+
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <LinearGradient
-                colors={isDark ? ['#1e1e1e', '#121212'] : ['#dfdedeff', '#d9d9d9ff', '#860a0aff']}
-                style={styles.container}
-            >
-                {/* Heart Rain */}
-                {showHearts && <HeartRain />}
-
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                    style={{ flex: 1 }}
-                >
-                    {/* Logo */}
-                    <Animated.View style={[styles.logoWrapper, { transform: [{ scale: logoScale }] }]}>
-                        <Image source={require('../../../assets/logo.png')} style={styles.logo} resizeMode="contain" />
-                    </Animated.View>
-
-                    {/* Card */}
-                    <Animated.View
-                        style={[
-                            styles.card,
-                            { opacity: cardOpacity, transform: [{ translateY: cardY }], backgroundColor: isDark ? '#1e1e1e' : '#fff' },
-                        ]}
-                    >
-                        <Text style={styles.title}>Login</Text>
-
-                        {/* Username */}
-                        <Controller
-                            control={control}
-                            name="username"
-                            render={({ field }) => (
-                                <View
-                                    style={[
-                                        styles.inputWrapper,
-                                        usernameFocused && styles.inputWrapperFocused,
-                                        { backgroundColor: isDark ? '#2a2a2a' : '#fafafa', borderColor: isDark ? '#333' : '#eee' },
-                                    ]}
-                                >
-                                    <Feather name="user" size={20} color="#8a7e7eff" style={styles.icon} />
-                                    <TextInput
-                                        style={styles.input}
-                                        placeholder="Username"
-                                        autoCapitalize="none"
-                                        value={field.value}
-                                        onChangeText={field.onChange}
-                                        onFocus={() => setUsernameFocused(true)}
-                                        onBlur={() => setUsernameFocused(false)}
-                                    />
-                                </View>
-                            )}
-                        />
-                        {errors.username && <Text style={styles.error}>{errors.username.message}</Text>}
-
-                        {/* Password */}
-                        <Controller
-                            control={control}
-                            name="password"
-                            render={({ field }) => (
-                                <View
-                                    style={[
-                                        styles.inputWrapper,
-                                        passwordFocused && styles.inputWrapperFocused,
-                                        { backgroundColor: isDark ? '#2a2a2a' : '#fafafa', borderColor: isDark ? '#333' : '#eee' },
-                                    ]}
-                                >
-                                    <Feather name="lock" size={20} color="#999" style={styles.icon} />
-                                    <TextInput
-                                        style={styles.input}
-                                        placeholder="Password"
-                                        secureTextEntry={!showPassword}
-                                        value={field.value}
-                                        onChangeText={field.onChange}
-                                        onFocus={() => setPasswordFocused(true)}
-                                        onBlur={() => setPasswordFocused(false)}
-                                    />
-                                    <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                                        <Feather name={showPassword ? 'eye' : 'eye-off'} size={20} color="#999" />
-                                    </TouchableOpacity>
-                                </View>
-                            )}
-                        />
-                        {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
-
-                        {/* Login Button */}
-                        <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-                            <LinearGradient colors={['#e91e63', '#ff6b6b']} style={styles.buttonGradient}>
-                                <Text style={styles.buttonText}>Login</Text>
-                            </LinearGradient>
-                        </TouchableOpacity>
-
-                        {/* Register Link */}
-                        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                            <Text style={styles.link}>Don't have an account? Register</Text>
-                        </TouchableOpacity>
-                    </Animated.View>
-                </KeyboardAvoidingView>
-            </LinearGradient>
+            {content}
         </TouchableWithoutFeedback>
     );
 }
