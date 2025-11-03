@@ -17,7 +17,8 @@ import {
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 import { setCredentials } from '../../redux/slices/authSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Feather } from '@expo/vector-icons';
@@ -73,6 +74,7 @@ const HeartRain = () => {
 
 export default function LoginScreen({ navigation }: any) {
     const dispatch = useDispatch();
+    const isDark = useSelector((state: RootState) => state.theme.isDarkMode);
     const [showPassword, setShowPassword] = useState(false);
     const [showHearts, setShowHearts] = useState(false);
     const [fontsLoaded] = useFonts({ Inter_700Bold, Inter_400Regular });
@@ -102,13 +104,9 @@ export default function LoginScreen({ navigation }: any) {
         }
     }, [fontsLoaded]);
 
-    // ---- Auto-login if already signed in ----
-    useEffect(() => {
-        (async () => {
-            const auth = await AsyncStorage.getItem('auth');
-            if (auth) navigation.replace('Main');
-        })();
-    }, [navigation]);
+    // Note: auto-login behaviour removed so the app always shows the Login screen
+    // on cold start. Previously this effect read AsyncStorage and redirected
+    // immediately to the main app if an 'auth' entry existed.
 
     // ---- Mock login + heart rain ----
     const onSubmit = async (data: FormData) => {
@@ -135,7 +133,10 @@ export default function LoginScreen({ navigation }: any) {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <LinearGradient colors={['#dfdedeff', '#d9d9d9ff', '#860a0aff']} style={styles.container}>
+            <LinearGradient
+                colors={isDark ? ['#1e1e1e', '#121212'] : ['#dfdedeff', '#d9d9d9ff', '#860a0aff']}
+                style={styles.container}
+            >
                 {/* Heart Rain */}
                 {showHearts && <HeartRain />}
 
@@ -152,7 +153,7 @@ export default function LoginScreen({ navigation }: any) {
                     <Animated.View
                         style={[
                             styles.card,
-                            { opacity: cardOpacity, transform: [{ translateY: cardY }] },
+                            { opacity: cardOpacity, transform: [{ translateY: cardY }], backgroundColor: isDark ? '#1e1e1e' : '#fff' },
                         ]}
                     >
                         <Text style={styles.title}>Login</Text>
@@ -166,6 +167,7 @@ export default function LoginScreen({ navigation }: any) {
                                     style={[
                                         styles.inputWrapper,
                                         usernameFocused && styles.inputWrapperFocused,
+                                        { backgroundColor: isDark ? '#2a2a2a' : '#fafafa', borderColor: isDark ? '#333' : '#eee' },
                                     ]}
                                 >
                                     <Feather name="user" size={20} color="#8a7e7eff" style={styles.icon} />
@@ -192,6 +194,7 @@ export default function LoginScreen({ navigation }: any) {
                                     style={[
                                         styles.inputWrapper,
                                         passwordFocused && styles.inputWrapperFocused,
+                                        { backgroundColor: isDark ? '#2a2a2a' : '#fafafa', borderColor: isDark ? '#333' : '#eee' },
                                     ]}
                                 >
                                     <Feather name="lock" size={20} color="#999" style={styles.icon} />

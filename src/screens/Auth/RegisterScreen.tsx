@@ -1,12 +1,16 @@
 // src/screens/Auth/RegisterScreen.tsx
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 
 export default function RegisterScreen({ navigation }: any) {
+    const isDark = useSelector((state: RootState) => state.theme.isDarkMode);
+
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Register</Text>
-            <Text style={styles.info}>Registration not required for demo</Text>
+        <View style={[styles.container, { backgroundColor: isDark ? '#121212' : '#fff' }]}>
+            <Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>Register</Text>
+            <Text style={[styles.info, { color: isDark ? '#ccc' : '#666' }]}>Registration not required for demo</Text>
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
                 <Text style={styles.buttonText}>Go to Login</Text>
             </TouchableOpacity>

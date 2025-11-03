@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 export default function FavouritesScreen() {
     const posts = useSelector((state: RootState) => state.posts.posts);
     const favourites = useSelector((state: RootState) => state.posts.favourites);
+    const isDark = useSelector((state: RootState) => state.theme.isDarkMode);
     const navigation = useNavigation<any>();
 
     const favPosts = posts.filter(post => favourites.includes(post.id));
@@ -19,14 +20,14 @@ export default function FavouritesScreen() {
 
     if (favPosts.length === 0) {
         return (
-            <View style={styles.center}>
-                <Text style={styles.empty}>No favourites yet</Text>
+            <View style={[styles.center, { backgroundColor: isDark ? '#121212' : '#fff' }]}>
+                <Text style={[styles.empty, { color: isDark ? '#ccc' : '#666' }]}>No favourites yet</Text>
             </View>
         );
     }
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: isDark ? '#121212' : '#f5f5f5' }]}>
             <FlatList
                 data={favPosts}
                 keyExtractor={(item) => item.id.toString()}
