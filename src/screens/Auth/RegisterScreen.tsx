@@ -13,6 +13,7 @@ import {
     Animated,
     Easing,
     Dimensions,
+    Image,
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/store';
@@ -21,7 +22,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setCredentials } from '../../redux/slices/authSlice';
-import { Feather, Ionicons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import ConfettiCannon from 'react-native-confetti-cannon';
@@ -104,7 +105,7 @@ export default function RegisterScreen({ navigation }: any) {
                 },
             ]}
         >
-            <Ionicons name="heart" size={28} color="#e91e63" />
+            <Feather name="heart" size={28} color="#e91e63" />
         </Animated.View>
     ));
 
@@ -120,6 +121,12 @@ export default function RegisterScreen({ navigation }: any) {
 
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.form}>
                 <Animatable.View animation="fadeInDown" duration={600}>
+                    {/* LOGO */}
+                    <Image
+                        source={require('../../../assets/logo.png')}
+                        style={styles.logo}
+                        resizeMode="contain"
+                    />
                     <Text style={[styles.title, { color: '#fff' }]}>Join LoLo</Text>
                     <Text style={[styles.subtitle, { color: '#fff' }]}>Create your account</Text>
                 </Animatable.View>
@@ -244,6 +251,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         padding: 24,
+    },
+    logo: {
+        width: 120,
+        height: 120,
+        alignSelf: 'center',
+        marginBottom: 16,
     },
     title: {
         fontSize: 36,
