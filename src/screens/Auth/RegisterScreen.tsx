@@ -122,11 +122,14 @@ export default function RegisterScreen({ navigation }: any) {
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.form}>
                 <Animatable.View animation="fadeInDown" duration={600}>
                     {/* LOGO */}
-                    <Image
-                        source={require('../../../assets/logo.png')}
-                        style={styles.logo}
-                        resizeMode="contain"
-                    />
+                    <View style={styles.logoWrap}>
+                        {isDark && <View style={styles.logoBackdrop} pointerEvents="none" />}
+                        <Image
+                            source={require('../../../assets/logo.png')}
+                            style={styles.logo}
+                            resizeMode="contain"
+                        />
+                    </View>
                     <Text style={[styles.title, { color: '#fff' }]}>Join LoLo</Text>
                     <Text style={[styles.subtitle, { color: '#fff' }]}>Create your account</Text>
                 </Animatable.View>
@@ -257,6 +260,22 @@ const styles = StyleSheet.create({
         height: 120,
         alignSelf: 'center',
         marginBottom: 16,
+    },
+    logoWrap: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        position: 'relative',
+        marginBottom: 16,
+    },
+    logoBackdrop: {
+        position: 'absolute',
+        width: 110,
+        height: 110,
+        borderRadius: 55,
+        backgroundColor: 'rgba(255,255,255,0.06)',
+        top: 0,
+        alignSelf: 'center',
     },
     title: {
         fontSize: 36,
