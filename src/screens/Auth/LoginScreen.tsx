@@ -145,6 +145,8 @@ export default function LoginScreen({ navigation }: any) {
             >
                 {/* Logo */}
                 <Animated.View style={[styles.logoWrapper, { transform: [{ scale: logoScale }] }]}>
+                    {/* subtle white mix/backdrop behind the logo when in dark mode */}
+                    {isDark && <View style={styles.logoBackdrop} pointerEvents="none" />}
                     <Image source={require('../../../assets/logo.png')} style={styles.logo} resizeMode="contain" />
                 </Animated.View>
 
@@ -169,10 +171,11 @@ export default function LoginScreen({ navigation }: any) {
                                     { backgroundColor: isDark ? '#2a2a2a' : '#fafafa', borderColor: isDark ? '#333' : '#eee' },
                                 ]}
                             >
-                                <Feather name="user" size={20} color="#8a7e7eff" style={styles.icon} />
+                                <Feather name="user" size={20} color={isDark ? 'rgba(255,255,255,0.7)' : '#8a7e7eff'} style={styles.icon} />
                                 <TextInput
-                                    style={styles.input}
+                                    style={[styles.input, { color: isDark ? 'rgba(255,255,255,0.9)' : '#000' }]}
                                     placeholder="Username"
+                                    placeholderTextColor={isDark ? 'rgba(255,255,255,0.7)' : '#999'}
                                     autoCapitalize="none"
                                     value={field.value}
                                     onChangeText={field.onChange}
@@ -196,10 +199,11 @@ export default function LoginScreen({ navigation }: any) {
                                     { backgroundColor: isDark ? '#2a2a2a' : '#fafafa', borderColor: isDark ? '#333' : '#eee' },
                                 ]}
                             >
-                                <Feather name="lock" size={20} color="#999" style={styles.icon} />
+                                <Feather name="lock" size={20} color={isDark ? 'rgba(255,255,255,0.7)' : '#999'} style={styles.icon} />
                                 <TextInput
-                                    style={styles.input}
+                                    style={[styles.input, { color: isDark ? 'rgba(255,255,255,0.9)' : '#000' }]}
                                     placeholder="Password"
+                                    placeholderTextColor={isDark ? 'rgba(255,255,255,0.7)' : '#999'}
                                     secureTextEntry={!showPassword}
                                     value={field.value}
                                     onChangeText={field.onChange}
@@ -207,7 +211,7 @@ export default function LoginScreen({ navigation }: any) {
                                     onBlur={() => setPasswordFocused(false)}
                                 />
                                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                                    <Feather name={showPassword ? 'eye' : 'eye-off'} size={20} color="#999" />
+                                    <Feather name={showPassword ? 'eye' : 'eye-off'} size={20} color={isDark ? 'rgba(255,255,255,0.7)' : '#999'} />
                                 </TouchableOpacity>
                             </View>
                         )}
@@ -246,6 +250,14 @@ const styles = StyleSheet.create({
     container: { flex: 1 },
     logoWrapper: { alignItems: 'center', marginTop: height * 0.08, marginBottom: 20 },
     logo: { width: 300, height: 300 },
+    logoBackdrop: {
+        position: 'absolute',
+        width: 260,
+        height: 260,
+        borderRadius: 130,
+        backgroundColor: 'rgba(255,255,255,0.06)',
+        top: 20,
+    },
     card: {
         backgroundColor: '#fff',
         marginHorizontal: 30,

@@ -21,7 +21,7 @@ const { width } = Dimensions.get('window');
 
 export default function ChatScreen() {
     const chats = useSelector((state: any) => state.allChats ?? []);
-    const isDark = useSelector((state: any) => state.theme?.isDark ?? false);
+    const isDarkMode = useSelector((state: any) => state.theme?.isDarkMode ?? false);
     const navigation = useNavigation<any>();
 
     const [localChats, setLocalChats] = useState<any[]>([]);
@@ -78,12 +78,12 @@ export default function ChatScreen() {
     const renderChatItem = ({ item }: any) => (
         <Animatable.View animation="fadeInUp" duration={400} delay={100}>
             <TouchableOpacity
-                style={[styles.chatItem, isDark && styles.chatItemDark]}
+                style={[styles.chatItem, isDarkMode && styles.chatItemDark]}
                 onPress={() => navigation.navigate('ChatDetail', { chatId: item.id })}
                 activeOpacity={0.8}
             >
                 <LinearGradient
-                    colors={isDark ? ['#6a11cb', '#2575fc'] : ['#e91e63', '#ff6b6b']}
+                    colors={isDarkMode ? ['#6a11cb', '#2575fc'] : ['#e91e63', '#ff6b6b']}
                     style={styles.avatarGradient}
                 >
                     <View style={styles.avatar}>
@@ -93,10 +93,10 @@ export default function ChatScreen() {
 
                 <View style={styles.chatContent}>
                     <View style={styles.chatHeader}>
-                        <Text style={[styles.chatName, { color: isDark ? '#fff' : '#000' }]}>{item.name}</Text>
-                        <Text style={[styles.chatTime, { color: isDark ? '#aaa' : '#888' }]}>{item.time}</Text>
+                        <Text style={[styles.chatName, { color: isDarkMode ? '#fff' : '#000' }]}>{item.name}</Text>
+                        <Text style={[styles.chatTime, { color: isDarkMode ? '#aaa' : '#888' }]}>{item.time}</Text>
                     </View>
-                    <Text style={[styles.chatMessage, { color: isDark ? '#ccc' : '#666' }]} numberOfLines={1}>
+                    <Text style={[styles.chatMessage, { color: isDarkMode ? '#ccc' : '#666' }]} numberOfLines={1}>
                         {item.lastMessage}
                     </Text>
                 </View>
@@ -111,11 +111,11 @@ export default function ChatScreen() {
     );
 
     const SkeletonItem = () => (
-        <View style={[styles.chatItem, isDark && styles.chatItemDark]}>
-            <View style={[styles.avatarGradient, { backgroundColor: isDark ? '#333' : '#eee' }]} />
+        <View style={[styles.chatItem, isDarkMode && styles.chatItemDark]}>
+            <View style={[styles.avatarGradient, { backgroundColor: isDarkMode ? '#333' : '#eee' }]} />
             <View style={styles.chatContent}>
-                <View style={[styles.skeletonLine, { width: '60%' }]} />
-                <View style={[styles.skeletonLine, { width: '80%', marginTop: 6 }]} />
+                <View style={[styles.skeletonLine, { width: '60%', backgroundColor: isDarkMode ? '#2a2a2a' : '#eee' }]} />
+                <View style={[styles.skeletonLine, { width: '80%', marginTop: 6, backgroundColor: isDarkMode ? '#2a2a2a' : '#eee' }]} />
             </View>
         </View>
     );
@@ -124,7 +124,7 @@ export default function ChatScreen() {
 
     return (
         <LinearGradient
-            colors={isDark ? ['#121212', '#1e1e1e'] : ['#f5f5f5', '#fff']}
+            colors={isDarkMode ? ['#121212', '#1e1e1e'] : ['#f5f5f5', '#fff']}
             style={styles.container}
         >
             <FlatList
@@ -138,8 +138,8 @@ export default function ChatScreen() {
                 showsVerticalScrollIndicator={false}
                 ListEmptyComponent={
                     <View style={styles.empty}>
-                        <Feather name="message-circle" size={48} color={isDark ? '#666' : '#ccc'} />
-                        <Text style={[styles.emptyText, { color: isDark ? '#aaa' : '#666' }]}>
+                        <Feather name="message-circle" size={48} color={isDarkMode ? '#666' : '#ccc'} />
+                        <Text style={[styles.emptyText, { color: isDarkMode ? '#aaa' : '#666' }]}>
                             No chats yet. Start a new one!
                         </Text>
                     </View>
